@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=WolfTest
+comment0.text=\r\n\ Pruebas\ unitarias\ para\ validar\ el\ comportamiento\ de\ la\ clase\ Wolf\ (Lobo).\r\n
+comment1.params=
+comment1.target=void\ deberiaNacerNegroYCuadrado()
+comment2.params=
+comment2.target=void\ deberiaVolverseGrisConElTiempo()
+comment3.params=
+comment3.target=void\ pruebaDeAceptacion_LoboMuereALos25Anios()
+numComments=4

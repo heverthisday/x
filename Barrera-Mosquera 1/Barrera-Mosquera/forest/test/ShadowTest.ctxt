@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=ShadowTest
+comment0.text=\r\n\ Pruebas\ unitarias\ para\ validar\ el\ movimiento\ fantasmal\ de\ la\ clase\ Shadow\ (Sombra).\r\n
+comment1.params=
+comment1.target=void\ deberiaMoverseHaciaElNorte()
+comment2.params=
+comment2.target=void\ deberiaAparecerEnElSurSiSalePorElNorte()
+numComments=3
