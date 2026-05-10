@@ -1,10 +1,12 @@
 package domain;
 
+import java.io.Serializable;
+
 /**
  * Clase abstracta que representa a los seres vivos en el simulador.
  * Maneja propiedades comunes como la energía y la edad (años).
  */
-public abstract class LivingThing {
+public abstract class LivingThing implements Serializable {
     
     protected int years;
     protected int energy;

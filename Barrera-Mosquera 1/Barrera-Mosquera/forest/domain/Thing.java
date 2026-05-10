@@ -1,12 +1,13 @@
 package domain;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * Interfaz base para todos los elementos del simulador.
  * Define las formas básicas y el comportamiento en cada ciclo de tiempo.
  */
-public interface Thing {
+public interface Thing extends Serializable {
     public static final int ROUND = 1;
     public static final int SQUARE = 2;
     public static final int TRIANGLE = 3;

@@ -1,93 +1,263 @@
 package presentation;
 
 import domain.*;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Interfaz gráfica principal del simulador.
- * Dibuja el tablero, los elementos y controla el paso del tiempo mediante el botón Tic-Tac.
+ * Dibuja el tablero, los elementos y controla el paso del tiempo.
+ * Incluye el menú Archivo con las opciones estándar de persistencia (Parte I-B).
  */
-public class ForestGUI extends JFrame {  
-    public static final int SIDE = 20; 
+public class ForestGUI extends JFrame {
 
+    public static final int SIDE = 20;
     public final int SIZE;
+
     private JButton ticTacButton;
-    private JPanel controlPanel;
     private PhotoForest photo;
     private Forest theForest;
-   
+
+    // ── Ítems del menú ──────────────────────────────────────────────────────
+    private JMenuItem menuItemNew;
+    private JMenuItem menuItemOpen;
+    private JMenuItem menuItemSaveAs;
+    private JMenuItem menuItemImport;
+    private JMenuItem menuItemExportAs;
+    private JMenuItem menuItemExit;
+
     /**
      * Constructor principal de la ventana.
-     * @param theForest El bosque (normal o de fuego) que se va a simular.
-     * @param title El título que aparecerá en la ventana.
+     * @param theForest El bosque que se va a simular.
+     * @param title     Título de la ventana.
      */
     public ForestGUI(Forest theForest, String title) {
         this.theForest = theForest;
-        this.SIZE = theForest.getSize(); 
+        this.SIZE = theForest.getSize();
         prepareElements();
+        prepareElementsMenu();
         setTitle(title);
         prepareActions();
+        prepareActionsMenu();
     }
-    
+
+    // ════════════════════════════════════════════════════════════════════════
+    // VISTA
+    // ════════════════════════════════════════════════════════════════════════
+
     /**
-     * Configura y ensambla los elementos visuales de la ventana (paneles y botones).
+     * Ensambla los elementos visuales principales (panel de dibujo y botón).
      */
     private void prepareElements() {
-        setTitle("Schelling Forest");
         photo = new PhotoForest(this);
         ticTacButton = new JButton("Tic-tac");
-        
+
         setLayout(new BorderLayout());
         add(photo, BorderLayout.NORTH);
         add(ticTacButton, BorderLayout.SOUTH);
-        
-        setSize(new Dimension(SIDE * SIZE + 15, SIDE * SIZE + 72)); 
+
+        setSize(new Dimension(SIDE * SIZE + 15, SIDE * SIZE + 95));
         setResizable(false);
         photo.repaint();
     }
 
     /**
-     * Configura los eventos de los botones (Listeners).
+     * Construye el menú Archivo con las seis opciones estándar y sus separadores.
+     * Nuevo | Abrir | Guardar como | ── | Importar | Exportar como | ── | Salir
+     */
+    private void prepareElementsMenu() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu menuArchivo = new JMenu("Archivo");
+        menuArchivo.setMnemonic(KeyEvent.VK_A);
+
+        // Nuevo
+        menuItemNew = new JMenuItem("Nuevo");
+        menuItemNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
+
+        // Abrir
+        menuItemOpen = new JMenuItem("Abrir...");
+        menuItemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+
+        // Guardar como
+        menuItemSaveAs = new JMenuItem("Guardar como...");
+        menuItemSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+
+        // Importar
+        menuItemImport = new JMenuItem("Importar...");
+
+        // Exportar como
+        menuItemExportAs = new JMenuItem("Exportar como...");
+
+        // Salir
+        menuItemExit = new JMenuItem("Salir");
+        menuItemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK));
+
+        // Ensamblar menú con separadores
+        menuArchivo.add(menuItemNew);
+        menuArchivo.addSeparator();
+        menuArchivo.add(menuItemOpen);
+        menuArchivo.add(menuItemSaveAs);
+        menuArchivo.addSeparator();
+        menuArchivo.add(menuItemImport);
+        menuArchivo.add(menuItemExportAs);
+        menuArchivo.addSeparator();
+        menuArchivo.add(menuItemExit);
+
+        menuBar.add(menuArchivo);
+        setJMenuBar(menuBar);
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    // CONTROLADOR
+    // ════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Registra los listeners del botón Tic-tac y del cierre de ventana.
      */
     private void prepareActions() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);       
-        ticTacButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ticTacButtonAction();
-            }
-        });
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        ticTacButton.addActionListener(e -> ticTacButtonAction());
     }
 
     /**
-     * Acción ejecutada al presionar el botón Tic-tac.
+     * Registra los listeners de las seis opciones del menú Archivo.
      */
+    private void prepareActionsMenu() {
+        menuItemNew.addActionListener(e -> optionNew());
+        menuItemOpen.addActionListener(e -> optionOpen());
+        menuItemSaveAs.addActionListener(e -> optionSaveAs());
+        menuItemImport.addActionListener(e -> optionImport());
+        menuItemExportAs.addActionListener(e -> optionExportAs());
+        menuItemExit.addActionListener(e -> optionExit());
+    }
+
+    // ── Acciones del menú ───────────────────────────────────────────────────
+
+    /**
+     * Crea un bosque nuevo descartando el estado actual.
+     */
+    private void optionNew() {
+        theForest = new Forest();
+        photo.repaint();
+    }
+
+    /**
+     * Abre un archivo .dat y carga el forest serializado.
+     * Por ahora el modelo lanza ForestException (opción en construcción).
+     */
+    private void optionOpen() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new FileNameExtensionFilter("Forest guardado (*.dat)", "dat"));
+        int resultado = chooser.showOpenDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            try {
+                theForest.open(file);
+                photo.repaint();
+            } catch (ForestException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * Guarda el estado actual del forest en un archivo .dat.
+     * Por ahora el modelo lanza ForestException (opción en construcción).
+     */
+    private void optionSaveAs() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new FileNameExtensionFilter("Forest guardado (*.dat)", "dat"));
+        int resultado = chooser.showSaveDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            if (!file.getName().endsWith(".dat")) {
+                file = new File(file.getAbsolutePath() + ".dat");
+            }
+            try {
+                theForest.saveAs(file);
+            } catch (ForestException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * Importa el estado del forest desde un archivo de texto .txt.
+     * Por ahora el modelo lanza ForestException (opción en construcción).
+     */
+    private void optionImport() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new FileNameExtensionFilter("Forest texto (*.txt)", "txt"));
+        int resultado = chooser.showOpenDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            try {
+                theForest.importFrom(file);
+                photo.repaint();
+            } catch (ForestException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * Exporta el estado actual del forest a un archivo de texto .txt.
+     * Por ahora el modelo lanza ForestException (opción en construcción).
+     */
+    private void optionExportAs() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new FileNameExtensionFilter("Forest texto (*.txt)", "txt"));
+        int resultado = chooser.showSaveDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            if (!file.getName().endsWith(".txt")) {
+                file = new File(file.getAbsolutePath() + ".txt");
+            }
+            try {
+                theForest.exportAs(file);
+            } catch (ForestException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * Termina la aplicación inmediatamente.
+     */
+    private void optionExit() {
+        System.exit(0);
+    }
+
+    // ── Acción del botón ────────────────────────────────────────────────────
+
     private void ticTacButtonAction() {
         theForest.ticTac();
-        photo.repaint(); 
+        photo.repaint();
     }
 
     /**
-     * Retorna el bosque actual que se está simulando.
+     * Retorna el bosque actual.
      * @return Objeto Forest.
      */
     public Forest getTheForest() {
         return theForest;
     }
 
-    /**
-     * Ejecuta el bosque los dos tipos de bosques
-     */
     public static void main(String[] args) {
-        // 1. Abre la ventana de Animales
         ForestGUI guiAnimales = new ForestGUI(new Forest(), "Parte II: Animales");
-        guiAnimales.setLocation(50, 50); 
+        guiAnimales.setLocation(50, 50);
         guiAnimales.setVisible(true);
 
-        // 2. Abre la ventana de Fuego
         ForestGUI guiFuego = new ForestGUI(new FireForest(), "Parte III: Forest Fire");
-        guiFuego.setLocation(600, 50); 
+        guiFuego.setLocation(600, 50);
         guiFuego.setVisible(true);
     }
 }
