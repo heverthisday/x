@@ -34,18 +34,18 @@ public class ForestAcceptanceTest {
         if (archivoTxt.exists()) archivoTxt.delete();
     }
 
-    // ════════════════════════════════════════════════════════════════════════
+
     // PRUEBA DE ACEPTACIÓN 1 — saveAs / open
     //
     // Escenario: el usuario ejecuta la aplicación, da dos clics en Tic-tac,
     // guarda el estado como forestOne.dat, crea un nuevo forest y abre el
     // archivo. El estado debe ser igual al que se guardó.
-    // ════════════════════════════════════════════════════════════════════════
+
 
     @Test
     public void aceptacion_guardarDosClicsYAbrir() throws ForestException {
 
-        // ── Paso 1: arrancar la aplicación y dar dos clics ───────────────
+        // ── Paso 1: arrancar la aplicación y dar dos clics
         Forest forestInicial = new Forest();
         forestInicial.ticTac();
         forestInicial.ticTac();
@@ -54,7 +54,7 @@ public class ForestAcceptanceTest {
         int size = forestInicial.getSize();
         String[][] estadoGuardado = capturarEstado(forestInicial);
 
-        // ── Paso 2: guardar como forestOne.dat ───────────────────────────
+        // ── Paso 2: guardar como forestOne.dat
         forestInicial.saveAs(archivoDat);
 
         assertTrue("El archivo forestOne.dat debe existir en disco",
@@ -62,7 +62,7 @@ public class ForestAcceptanceTest {
         assertTrue("El archivo forestOne.dat debe ocupar espacio",
                 archivoDat.length() > 0);
 
-        // ── Paso 3: "salir" → crear un nuevo forest vacío ────────────────
+        // Paso 3: "salir" → crear un nuevo forest vacío
         Forest forestNuevo = new Forest();
         // Simular Nuevo: limpiar todas las celdas
         for (int r = 0; r < size; r++)
@@ -73,10 +73,10 @@ public class ForestAcceptanceTest {
         assertNull("Tras Nuevo, la celda (0,0) debe estar vacía",
                 forestNuevo.getThing(0, 0));
 
-        // ── Paso 4: abrir forestOne.dat ──────────────────────────────────
+        //Paso 4: abrir forestOne.dat
         forestNuevo.open(archivoDat);
 
-        // ── Paso 5: verificar que el estado restaurado coincide ──────────
+        //Paso 5: verificar que el estado restaurado coincide
         String[][] estadoRestaurado = capturarEstado(forestNuevo);
 
         for (int r = 0; r < size; r++) {

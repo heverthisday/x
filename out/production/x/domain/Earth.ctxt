@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=Earth
+comment0.text=\r\n\ Representa\ la\ tierra\ en\ el\ simulador\ Forest\ Fire.\r\n\ Es\ el\ elemento\ base\ sobre\ el\ cual\ aparecen\ otros\ elementos\ y\ genera\ vida\ o\ destrucci\u00F3n\ por\ probabilidad.\r\n
+comment1.params=forest\ row\ column
+comment1.target=Earth(Forest,\ int,\ int)
+comment1.text=\r\n\ Crea\ un\ nuevo\ bloque\ de\ tierra\ en\ el\ bosque.\r\n\ @param\ forest\ El\ bosque\ donde\ reside.\r\n\ @param\ row\ Fila\ de\ ubicaci\u00F3n.\r\n\ @param\ column\ Columna\ de\ ubicaci\u00F3n.\r\n
+comment2.params=
+comment2.target=int\ shape()
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+comment4.params=
+comment4.target=void\ ticTac()
+comment4.text=\r\n\ Acci\u00F3n\ de\ tiempo\ de\ la\ tierra.\r\n\ Eval\u00FAa\ las\ probabilidades\ de\ generar\ fuego\ o\ agua\ en\ cada\ ciclo.\r\n
+numComments=5

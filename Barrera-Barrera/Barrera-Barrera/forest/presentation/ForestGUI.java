@@ -21,7 +21,7 @@ public class ForestGUI extends JFrame {
     private PhotoForest photo;
     private Forest theForest;
 
-    // ── Ítems del menú ──────────────────────────────────────────────────────
+    // ── Ítems del menú
     private JMenuItem menuItemNew;
     private JMenuItem menuItemOpen;
     private JMenuItem menuItemSaveAs;
@@ -44,9 +44,9 @@ public class ForestGUI extends JFrame {
         prepareActionsMenu();
     }
 
-    // ════════════════════════════════════════════════════════════════════════
+
     // VISTA
-    // ════════════════════════════════════════════════════════════════════════
+
 
     /**
      * Ensambla los elementos visuales principales (panel de dibujo y botón).
@@ -111,9 +111,8 @@ public class ForestGUI extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    // ════════════════════════════════════════════════════════════════════════
     // CONTROLADOR
-    // ════════════════════════════════════════════════════════════════════════
+
 
     /**
      * Registra los listeners del botón Tic-tac y del cierre de ventana.
@@ -135,7 +134,7 @@ public class ForestGUI extends JFrame {
         menuItemExit.addActionListener(e -> optionExit());
     }
 
-    // ── Acciones del menú ───────────────────────────────────────────────────
+    //Acciones del menú
 
     /**
      * Crea un bosque nuevo descartando el estado actual.
@@ -236,7 +235,7 @@ public class ForestGUI extends JFrame {
         System.exit(0);
     }
 
-    // ── Acción del botón ────────────────────────────────────────────────────
+    //Acción del botón
 
     private void ticTacButtonAction() {
         theForest.ticTac();
