@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=Wolf
+comment0.text=\r\n\ Representa\ un\ lobo\ en\ el\ simulador.\r\n\ Se\ mueve\ en\ un\ radio\ cercano\ de\ 5x5\ y\ tiene\ una\ esperanza\ de\ vida\ de\ 25\ ciclos.\r\n
+comment1.params=forest\ row\ column
+comment1.target=Wolf(Forest,\ int,\ int)
+comment2.params=
+comment2.target=int\ shape()
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+comment4.params=
+comment4.target=void\ ticTac()
+comment5.params=
+comment5.target=void\ die()
+numComments=6

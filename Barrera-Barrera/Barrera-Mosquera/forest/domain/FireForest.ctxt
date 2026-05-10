@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=FireForest
+comment0.text=\r\n\ Representa\ la\ variante\ del\ bosque\ dise\u00F1ada\ espec\u00EDficamente\ para\ el\ Forest\ Fire\ Model.\r\n\ Se\ encarga\ de\ inicializar\ el\ tablero\ sin\ espacios\ vac\u00EDos.\r\n
+comment1.params=
+comment1.target=FireForest()
+comment1.text=\r\n\ Constructor\ del\ bosque\ de\ fuego.\r\n
+comment2.params=
+comment2.target=void\ prepararEscenario()
+comment2.text=\r\n\ Genera\ el\ escenario\ base\ llenando\ todo\ con\ Tierra\ y\ una\ probabilidad\ de\ \u00C1rboles.\r\n
+numComments=3
